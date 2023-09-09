@@ -2,9 +2,9 @@
 
 ## Описание проекта:
 
-- #### Проект Kittygram позволяет пользователям поделиться своим пушистым счастьем и рассказать о его достижениях!
+Проект Kittygram позволяет пользователям поделиться своим пушистым счастьем и рассказать о его достижениях!
 
----
+
 ## В проекте были использованы технологии:
 * #### Django REST
 * #### Python 3.9
@@ -21,57 +21,95 @@
 
 ## Как запустить проект:
 
-``` Настраиваем Docker
+ Настраиваем Docker
+``` 
 sudo apt update
 sudo apt install curl
 curl -fSL https://get.docker.com -o get-docker.sh
 sudo sh ./get-docker.sh
 sudo apt-get install docker-compose-plugin;
-# Переходим в директорию проекта.
+``` 
+Переходим в директорию проекта.
+``` 
 cd kittygram_final/
-# Создаем и редактируем файл .env, в котором нужно указать данные
+``` 
+Генерируем новый секретный ключ Django
+
+```
+sudo docker compose -f docker-compose.production.yml exec backend python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
+```
+
+Создаем файл .env, в котором нужно указать данные
+
+``` 
 sudo nano .env
-# 
-DJANGO_KEY=django-insecure-cg6*%6d51ef8f#4!r3*$vmxm4)abgjw8mo!4y-q*uq1!4$-88$
+```
+Добавьте в файл .env код  
+
+```
+DJANGO_KEY=<Сгенерированный_ключ>
 POSTGRES_DB=<Желаемое_имя_базы_данных>
 POSTGRES_USER=<Желаемое_имя_пользователя_базы_данных>
 POSTGRES_PASSWORD=<Желаемый_пароль_пользователя_базы_данных>
 DB_HOST=db
 DB_PORT=5432
-# Сохраняем файл. Ключ DJANGO_KEY рекомендуется заменить
-# Далее выполняем последовательно
-sudo docker compose -f docker-compose.production.yml pull
-sudo docker compose -f docker-compose.production.yml down
-sudo docker compose -f docker-compose.production.yml up -d
-sudo docker compose -f docker-compose.production.yml exec backend python manage.py migrate
-sudo docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic
-sudo docker compose -f docker-compose.production.yml exec backend cp -r /app/collect_static/. /static_backend/static/
-# Создаем суперпользователся. Следуем инструкциям при выполнении.
-sudo docker compose -f docker-compose.production.yml exec backend python manage.py createsuperuser
+```
+Далее выполняем последовательно:
 
-# Генерируем новый секретный ключ Django
-sudo docker compose -f docker-compose.production.yml exec backend python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
-# В ответ будет примерно такая строка: cg6*%6d51ef8f#4!r3*$vmxm4)abgjw8mo!4y-q*uq1!4$-88$
-# Вставляем в .env файл. Должно получиться примерно такое:
-DJANGO_KEY=django-insecure-cg6*%6d51ef8f#4!r3*$vmxm4)abgjw8mo!4y-q*uq1!4$-88$
+Загрузите images
+```
+sudo docker compose -f docker-compose.production.yml pull
+```
+Остановите и удалите контейнеры 
+```
+sudo docker compose -f docker-compose.production.yml down
+```
+Соберите и запустите контейнеры в фоновом режиме
+```
+sudo docker compose -f docker-compose.production.yml up -d
+```
+Примените миграции
+```
+sudo docker compose -f docker-compose.production.yml exec backend python manage.py migrate
+```
+Соберите статику
+```
+sudo docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic
+```
+Скопируйте статику в том
+```
+sudo docker compose -f docker-compose.production.yml exec backend cp -r /app/collect_static/. /static_backend/static/
+```
+Создайте суперпользователся
+```
+sudo docker compose -f docker-compose.production.yml exec backend python manage.py createsuperuser
 ```
 
-Устанавливаем и настраиваем NGINX
 
-```bash
-# Устанавливаем NGINX
+
+Устанавливаем NGINX
+```
 sudo apt install nginx -y
-# Запускаем
+```
+Запускаем NGINX
+```
 sudo systemctl start nginx
-# Настраиваем firewall
+```
+Настраиваем firewall
+```
 sudo ufw allow 'Nginx Full'
 sudo ufw allow OpenSSH
-# Включаем firewall
+```
+Включаем firewall
+```
 sudo ufw enable
-# Открываем конфигурационный файл NGINX
+```
+Откройте конфигурационный файл NGINX
+```
 sudo nano /etc/nginx/sites-enabled/default
-# Полностью удаляем из него все и пишем новые настройки
-
+```
+Удалите из него все и напишите новые настройки
+```
 server {
     listen 80;
     server_name example.com;
@@ -82,41 +120,47 @@ server {
 
     }
 }
+```
 
-# Сохраняем изменения и выходим из редактора
-# Проверяем корректность настроек
+Проверяем корректность настроек
+```
 sudo nginx -t
-# Запускаем NGINX
+```
+Запускаем NGINX
+```
 sudo systemctl start nginx
 ```
-Настраиваем HTTPS
 
-```bash
-# Установка пакетного менеджера snap.
-# У этого пакетного менеджера есть нужный вам пакет — certbot.
+Настройте HTTPS
+
+
+Установите пакетный менеджер snap.
+```
 sudo apt install snapd
-# Установка и обновление зависимостей для пакетного менеджера snap.
+```
+Установите и обновите зависимости для пакетного менеджера snap.
+```
 sudo snap install core; sudo snap refresh core
-# При успешной установке зависимостей в терминале выведется:
-# core 16-2.58.2 from Canonical✓ installed 
-
-# Установка пакета certbot.
+```
+Установите пакет certbot.
+```
 sudo snap install --classic certbot
-# При успешной установке пакета в терминале выведется:
-# certbot 2.3.0 from Certbot Project (certbot-eff✓) installed
-
-# Создание ссылки на certbot в системной директории,
-# чтобы у пользователя с правами администратора был доступ к этому пакету.
+```
+Создайте ссылку на certbot в системной директории, чтобы у пользователя с правами администратора был доступ к этому пакету.
 sudo ln -s /snap/bin/certbot /usr/bin/certbot
 
-# Получаем сертификат и настраиваем NGINX следуя инструкциям
+Получите сертификат 
+```
 sudo certbot --nginx
-# Перезапускаем NGINX
+```
+Перезапустите NGINX
+```
 sudo systemctl reload nginx
 ```
 
 
+
 ![main.yml](https://github.com/vladimirchernyy/kittygram_final/actions/workflows/main.yml/badge.svg)
 
-### Над проектом работал:
+## Над проектом работал:
 * [Vladimir Chernyy](https://github.com/VladimirChernyy)
