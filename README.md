@@ -6,14 +6,14 @@
 
 
 ## В проекте были использованы технологии:
-* #### Django REST
-* #### Python 3.9
-* #### Gunicorn
-* #### Nginx
-* #### JS
-* #### Node.js
-* #### PostgreSQL
-* #### Docker
+Django REST
+Python 3.9
+Gunicorn
+Nginx
+JS
+Node.js
+PostgreSQL
+Docker
 
 ## Попробовать демо-версию:
 * [Kittygram](https://ya-kittygram.ddns.net)
@@ -163,4 +163,4 @@ sudo systemctl reload nginx
 ![main.yml](https://github.com/vladimirchernyy/kittygram_final/actions/workflows/main.yml/badge.svg)
 
 ## Над проектом работал:
-* [Vladimir Chernyy](https://github.com/VladimirChernyy)
+[Vladimir Chernyy](https://github.com/VladimirChernyy)
