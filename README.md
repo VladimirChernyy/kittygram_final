@@ -4,6 +4,11 @@
 
 Проект Kittygram позволяет пользователям поделиться своим пушистым счастьем и рассказать о его достижениях!
 
+![2023-10-23_09-51](https://github.com/VladimirChernyy/kittygram_final/assets/116533449/39fba145-5567-443b-bfb6-a108800b9427)
+![2023-10-23_09-50_1](https://github.com/VladimirChernyy/kittygram_final/assets/116533449/13b622d1-3001-47b3-9011-dd33272c4a4c)
+![2023-10-23_09-50](https://github.com/VladimirChernyy/kittygram_final/assets/116533449/068bfc85-b7f4-4832-b844-0dd5bb0543cd)
+![2023-10-23_09-34](https://github.com/VladimirChernyy/kittygram_final/assets/116533449/b86eec41-09dd-4b2b-9d7c-a4e029e6fab6)
+
 
 ## В проекте были использованы технологии:
 Django REST
