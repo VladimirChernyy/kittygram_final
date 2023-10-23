@@ -65,14 +65,14 @@ def docker_compose_prod_file_name() -> str:
     return DOCKER_COMPOSE_PROD_FILE_NAME
 
 
-@pytest.fixture(scope='session')
-def deploy_file_info() -> tuple[Path, str]:
-    deploy_info_file = BASE_DIR / DEPLOY_INFO_FILE_NAME
-    assert deploy_info_file.is_file(), (
-        f'Убедитесь, что в корневой директории проекта создан файл '
-        f'`{DEPLOY_INFO_FILE_NAME}`'
-    )
-    return (deploy_info_file, DEPLOY_INFO_FILE_NAME)
+# @pytest.fixture(scope='session')
+# def deploy_file_info() -> tuple[Path, str]:
+#     deploy_info_file = BASE_DIR / DEPLOY_INFO_FILE_NAME
+#     assert deploy_info_file.is_file(), (
+#         f'Убедитесь, что в корневой директории проекта создан файл '
+#         f'`{DEPLOY_INFO_FILE_NAME}`'
+#     )
+#     return (deploy_info_file, DEPLOY_INFO_FILE_NAME)
 
 
 @pytest.fixture(scope='session')
